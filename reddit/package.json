@@ -1,0 +1,20 @@
+{
+    "name": "gace-reddit-plugin",
+    "private": true,
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "dev": "gace dev --ws-url http://localhost:${CONDUCTOR_PORT:-8787}/api/sandbox/new",
+        "build": "gace build",
+        "publish": "gace publish --api-url http://localhost:${CONDUCTOR_PORT:-8787}",
+        "gace": "gace"
+    },
+    "dependencies": {
+        "gace-sdk": "workspace:*",
+        "zod": "^3.23.0"
+    },
+    "devDependencies": {
+        "@gace/ts-plugin": "^0.2.2",
+        "typescript": "^5.6.3"
+    }
+}
