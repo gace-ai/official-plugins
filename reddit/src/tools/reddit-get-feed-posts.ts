@@ -8,7 +8,7 @@ export async function redditGetFeedPosts(sdk: BrowserSDK) {
     if (sdk.args.scrollForMore) {
         const scrollCount = Math.min(sdk.args.maxScrolls || 1, 3);
         for (let i = 0; i < scrollCount; i++) {
-            const scrollEl = doc.scrollingElement;
+            const scrollEl = await doc.scrollingElement;
             if (scrollEl) {
                 const currentHeight = await scrollEl.scrollHeight;
                 await scrollEl.scrollTo(0, currentHeight);

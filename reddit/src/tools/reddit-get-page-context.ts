@@ -17,7 +17,7 @@ export async function redditGetPageContext(sdk: BrowserSDK) {
         const info = await extractSubredditInfo(doc);
         if (info) result.subreddit = info.subreddit;
     } else if (pageType === "post") {
-        const post = doc.querySelector("shreddit-post");
+        const post = await doc.querySelector("shreddit-post");
         if (post) {
             const [title, author, score, commentCount, subreddit] =
                 await Promise.all([
@@ -46,16 +46,16 @@ export async function redditGetPageContext(sdk: BrowserSDK) {
             }));
         }
     } else if (pageType === "profile") {
-        const displayName = doc.querySelector(
+        const displayName = await doc.querySelector(
             'h1[data-testid="profile-display-name"]',
         );
-        const karma = doc.querySelector(
+        const karma = await doc.querySelector(
             'span[data-testid="karma-number"]',
         );
         result.username = displayName
-            ? displayName.textContent
+            ? await displayName.textContent
             : "unknown";
-        result.karma = karma ? karma.textContent : "unknown";
+        result.karma = karma ? await karma.textContent : "unknown";
     } else if (pageType === "submit") {
         result.subreddit =
             tab.url.match(/\/r\/([^/]+)/)?.[1] || "unknown";

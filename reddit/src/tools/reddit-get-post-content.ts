@@ -6,7 +6,7 @@ export async function redditGetPostContent(sdk: BrowserSDK) {
     const doc: any = tab.document;
     const limit = Math.min(sdk.args.commentLimit || 20, 50);
 
-    const post = doc.querySelector("shreddit-post");
+    const post = await doc.querySelector("shreddit-post");
     if (!post) {
         throw new Error(
             "No post found on this page. Navigate to a Reddit post first.",

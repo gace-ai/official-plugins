@@ -6,7 +6,7 @@ export async function redditDraftPost(sdk: BrowserSDK) {
     const doc: any = tab.document;
 
     // Navigate to submit page
-    const link = doc.createElement("a");
+    const link = await doc.createElement("a");
     await link.setAttribute(
         "href",
         `https://www.reddit.com/r/${sdk.args.subreddit}/submit`,
@@ -23,7 +23,7 @@ export async function redditDraftPost(sdk: BrowserSDK) {
 
     // Fill title
     await titleInput.setAttribute("value", sdk.args.title);
-    const innerTitle = titleInput.querySelector("textarea, input");
+    const innerTitle = await titleInput.querySelector("textarea, input");
     if (innerTitle) {
         await innerTitle.focus();
         (innerTitle as any).value = sdk.args.title;
@@ -42,7 +42,7 @@ export async function redditDraftPost(sdk: BrowserSDK) {
         sdk,
         5000,
     );
-    const editor = composer.querySelector(
+    const editor = await composer.querySelector(
         'div[contenteditable="true"]',
     );
 

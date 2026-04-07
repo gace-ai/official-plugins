@@ -5,8 +5,8 @@ export async function redditGetUserProfile(sdk: BrowserSDK) {
     const tab = sdk.tabs.getById(sdk.args.tabId);
     const doc: any = tab.document;
 
-    const link = doc.createElement("a");
-    link.setAttribute(
+    const link = await doc.createElement("a");
+    await link.setAttribute(
         "href",
         `https://www.reddit.com/user/${sdk.args.username}/`,
     );
@@ -15,24 +15,24 @@ export async function redditGetUserProfile(sdk: BrowserSDK) {
     await sdk.time.sleep(2000);
     await waitForElement(doc, '[data-testid="profile-main"]', sdk, 8000);
 
-    const displayName = doc.querySelector(
+    const displayName = await doc.querySelector(
         'h1[data-testid="profile-display-name"]',
     );
-    const karmaEl = doc.querySelector(
+    const karmaEl = await doc.querySelector(
         'span[data-testid="karma-number"]',
     );
 
     const username = displayName
-        ? displayName.textContent
+        ? await displayName.textContent
         : sdk.args.username;
-    const karma = karmaEl ? karmaEl.textContent : "unknown";
+    const karma = karmaEl ? await karmaEl.textContent : "unknown";
 
-    const postElements = doc.querySelectorAll("shreddit-post");
-    const postCount = Math.min(postElements.length, 5);
+    const postElements = await doc.querySelectorAll("shreddit-post");
+    const postCount = Math.min(await postElements.length, 5);
     const recentPosts = [];
 
     for (let i = 0; i < postCount; i++) {
-        const el = postElements.item(i);
+        const el = await postElements.item(i);
         if (!el) continue;
         const [title, subreddit, score] = await Promise.all([
             el.getAttribute("post-title"),
@@ -46,16 +46,16 @@ export async function redditGetUserProfile(sdk: BrowserSDK) {
         });
     }
 
-    const commentElements = doc.querySelectorAll(
+    const commentElements = await doc.querySelectorAll(
         "shreddit-profile-comment",
     );
-    const commentCount = Math.min(commentElements.length, 5);
+    const commentCount = Math.min(await commentElements.length, 5);
     const recentComments = [];
 
     for (let i = 0; i < commentCount; i++) {
-        const el = commentElements.item(i);
+        const el = await commentElements.item(i);
         if (!el) continue;
-        const commentId = el.getAttribute("comment-id");
+        const commentId = await el.getAttribute("comment-id");
         const body = commentId
             ? await extractCommentBody(doc, commentId)
             : "";

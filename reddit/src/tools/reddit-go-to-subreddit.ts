@@ -10,8 +10,8 @@ export async function redditGoToSubreddit(sdk: BrowserSDK) {
     const sort = sdk.args.sort || "hot";
     const doc: any = tab.document;
 
-    const link = doc.createElement("a");
-    link.setAttribute(
+    const link = await doc.createElement("a");
+    await link.setAttribute(
         "href",
         `https://www.reddit.com/r/${sdk.args.subreddit}/${sort}/`,
     );

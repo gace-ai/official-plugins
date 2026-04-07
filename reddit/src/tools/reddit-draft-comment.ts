@@ -7,7 +7,7 @@ export async function redditDraftComment(sdk: BrowserSDK) {
     let replyingTo: string;
 
     if (sdk.args.commentId) {
-        const comment = doc.querySelector(
+        const comment = await doc.querySelector(
             `shreddit-comment[thingid="${sdk.args.commentId}"]`,
         );
         if (!comment) {
@@ -19,7 +19,7 @@ export async function redditDraftComment(sdk: BrowserSDK) {
         await comment.scrollIntoView();
         await sdk.time.sleep(500);
 
-        const replyBtn = comment.querySelector(
+        const replyBtn = await comment.querySelector(
             'faceplate-tracker[slot="comment-reply"] button',
         );
         if (!replyBtn) {
@@ -38,10 +38,10 @@ export async function redditDraftComment(sdk: BrowserSDK) {
             5000,
         );
 
-        const author = comment.getAttribute("author");
+        const author = await comment.getAttribute("author");
         replyingTo = `u/${author} (${sdk.args.commentId})`;
     } else {
-        const trigger = doc.querySelector(
+        const trigger = await doc.querySelector(
             'faceplate-textarea-input[data-testid="trigger-button"]',
         );
         if (!trigger) {
@@ -67,8 +67,8 @@ export async function redditDraftComment(sdk: BrowserSDK) {
         ? `comment-composer-host[parent-id="${sdk.args.commentId}"]`
         : "comment-composer-host:not([parent-id])";
 
-    const composerHost = doc.querySelector(composerSelector);
-    const editor = composerHost.querySelector(
+    const composerHost = await doc.querySelector(composerSelector);
+    const editor = await composerHost.querySelector(
         'div[contenteditable="true"]',
     );
 
